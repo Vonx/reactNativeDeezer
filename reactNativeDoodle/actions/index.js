@@ -12,6 +12,14 @@ const axiosInstance = axios.create({
     headers: {'X-Mashape-Key': API_KEY}
 });
 
+export const getAlbum = (albumId) => {
+
+    return axiosInstance.get(`album/${albumId}`).then((response) => {
+        const theAlbum = response.data.tracks.data;
+        return theAlbum;
+    });
+};
+
 export const searchTracks = (singerName) => {
 
     return axiosInstance.get(`search?q=${singerName}`).then((response) => {

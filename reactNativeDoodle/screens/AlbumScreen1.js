@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Card, Text, Button, FormLabel, FormInput } from 'react-native-elements';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Card, Text, Button, FormLabel, FormInput, Icon } from 'react-native-elements';
 import { ExpoLinksView } from '@expo/samples';
 import {CardList} from '../components/cardList';
 import * as actions from '../actions';
@@ -22,10 +22,11 @@ export default class AlbumScreen1 extends React.Component {
         };
 
      this.inputArtist = this.inputArtist.bind(this);
+     this.renderBottomNavigation = this.renderBottomNavigation.bind(this);
 
     }
 
-    inputArtist () {
+    inputArtist = () => {
         this.setState({isFetching: true, albums: []});
 
         actions.searchTracks(this.state.searchText)
@@ -33,7 +34,33 @@ export default class AlbumScreen1 extends React.Component {
             .catch(err => this.setState({albums: [], isFetching: false}))
     }
 
-    renderAlbumsView () {
+    renderBottomNavigation(album)  {
+        const artist = this.state.searchText;
+        return (
+            <View style={styles.albumMenu}>
+                <Icon onPress={() => {}}
+                      raised
+                      name='play'
+                      type='font-awesome'
+                      color='#f58'
+                      size={30}/>
+                <Icon onPress={() => {this.props.navigation.navigate('AlbumDetailScreen', {album, artist})}}
+                      raised
+                      name='info'
+                      type='font-awesome'
+                      color='#f58'
+                      size={30}/>
+                <Icon onPress={() => {}}
+                      raised
+                      name='thumbs-up'
+                      type='font-awesome'
+                      color='#f58'
+                      size={30}/>
+            </View>
+        )
+    }
+
+    renderAlbumsView = () => {
         return (
         <ScrollView style={styles.container}>
             <FormLabel containerStyle={styles.center}>Search an Artist</FormLabel>
@@ -45,7 +72,7 @@ export default class AlbumScreen1 extends React.Component {
             }}/>
             {this.state.albums.length > 0 && !this.state.isFetching &&
             <CardList data={this.state.albums} imageKey={'cover_big'} titleKey={'title'} buttonText={'See more details'}
-                      tracklist={'tracklist'}/>
+                      tracklist={'tracklist'} bottomView={this.renderBottomNavigation}/>
             }
             {this.state.albums.length === 0 && this.state.isFetching &&
                 <Bars style={styles.center} size={20} color="#000000" />
@@ -70,4 +97,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center'
     },
+    albumMenu: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
+    }
 });
