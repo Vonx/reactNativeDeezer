@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Linking } from 'react-native';
 import { Card, Text, Button, FormLabel, FormInput, Icon, Avatar, Divider, List, ListItem } from 'react-native-elements';
 import * as actions from '../actions';
 
@@ -35,7 +35,7 @@ export default class LinksScreen extends React.Component {
                                         name='star'
                                         type='font-awesome'
                                         color='#f50'
-                                        onPress={()=>{}}
+                                        onPress={()=>{Linking.openURL(track.preview)}}
                                    />    }
                     />)
                  })
@@ -48,11 +48,13 @@ export default class LinksScreen extends React.Component {
         const artist = this.props.navigation.getParam('artist', '');
         if(album.id){  return (
             <ScrollView style={styles.container}>
-                <View>
+                <View style={styles.header}>
+                    <View style={styles.avatar}>
                     <Avatar xlarge rounded source={{uri: album.cover_medium}}></Avatar>
-                  <View>
-                      <Text h4>{album.title}</Text>
-                      <Text h4>{artist}</Text>
+                    </View>
+                  <View style={styles.headerRight}>
+                      <Text style={styles.mainText}h4>{album.title}</Text>
+                      <Text style={styles.subText} h4>{artist}</Text>
                       <Text h4></Text>
 
 
@@ -61,11 +63,11 @@ export default class LinksScreen extends React.Component {
                           type='font-awesome'
                           color='#f50'
                           size={30}
-                          onPress={()=>{}}/>
+                          onPress={()=>{Linking.openURL(this.state.tracks[0].preview)}}/>
                   </View>
                 </View>
                 <Divider style={{backgroundColor: 'black'}}/>
-                <List>
+                <List containerStyle={{paddingTop: 0, marginTop: 0}}>
                 {this.renderTracks()}
                 </List>
             </ScrollView>
@@ -75,11 +77,34 @@ export default class LinksScreen extends React.Component {
 
     }
 }
-
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: 15,
-        backgroundColor: '#fff',
+        flex: 1
     },
+    header: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        padding: 20
+    },
+    avatar: {
+        flex: 1,
+        marginRight: 20
+    },
+    headerRight: {
+        flex: 1,
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+        flexDirection: 'column'
+    },
+    mainText: {
+        fontWeight: 'bold',
+        color: '#3a3a3a',
+        fontSize: 17
+    },
+    subText: {
+        color: '#3a3a3a',
+        fontSize: 17
+    }
 });
