@@ -7,65 +7,59 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { Card, Text, Button, FormLabel, FormInput, Icon } from 'react-native-elements';
+import { Card, Button, FormLabel, FormInput, Icon, List, ListItem, Text } from 'react-native-elements';
 import {CardList} from '../components/cardList';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+
+const menuList = [
+    {   title: 'Search Albums',
+        subTitle: 'Search your favorite music',
+        icon: 'music',
+        navigateTo: 'AlbumScreen'
+    },
+    {   title: 'Favorite Collections',
+        subTitle: 'Access your favorite albums',
+        icon: 'play',
+        navigateTo: '#'
+    },
+    {   title: 'Settings',
+        subTitle: 'Customize your App',
+        icon: 'info',
+        navigateTo: '#'
+    }
+];
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
       title: 'Home',
   };
 
-    renderHomeCards()  {
-        return (
-            <ScrollView style={styles.container}>
-              <View style={styles.header}>
-              <Card style={styles.headerRight} title='Search Albums'>
-                <Text style={styles.mainText}h4>Search Albums</Text>
-                <Text style={styles.subText} h4>Search your favorite music</Text>
-                <Icon containerStyle={{alignSelf: 'center'}}
-                      onPress={() => {{this.props.navigation.navigate('AlbumScreen')}}}
-                      raised
-                      name='play'
-                      type='font-awesome'
-                      color='#f58'
-                      size={30}/>
-              </Card>
-              <Card title='Favorites'>
-                <Text style={styles.mainText}h4>Favorite Collections</Text>
-                <Text style={styles.subText} h4>Access your favorite albums</Text>
-                <Icon containerStyle={{alignSelf: 'center'}}
-                      onPress={() => {}}
-                      raised
-                      name='play'
-                      type='font-awesome'
-                      color='#f58'
-                      size={30}/>
-              </Card>
-              <Card title='Settings'>
-                <Text style={styles.mainText}h4>Settings</Text>
-                <Text style={styles.subText} h4>Customize your app</Text>
-                <Icon containerStyle={{alignSelf: 'center'}}
-                      onPress={() => {}}
-                      raised
-                      name='play'
-                      type='font-awesome'
-                      color='#f58'
-                      size={30}/>
-              </Card>
-              </View>
-            </ScrollView>
-        )
-    }
-
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Button title={'Navigate to Album Screen'} onPress={() => {this.props.navigation.navigate('AlbumScreen')}}/>
-          {this.renderHomeCards()}
-      </View>
+          <List containerStyle={{backgroundColor: '#eaeaea', marginTop: 0 }}>
+              {menuList.map((item, index)=>{
+
+                  return (
+                      <Card key={index}
+                            title={item.title}>
+                            <View style={styles.cardView}>
+                                <Text style={{marginBottom: 10}}>{item.subTitle}</Text>
+                                <Icon onPress={() => {{this.props.navigation.navigate(item.navigateTo)}}}
+                                      raised
+                                      name={item.icon}
+                                      type='font-awesome'
+                                      color='#f58'
+                                      size={30}/>
+                            </View>
+                        </Card>
+                  );
+              })}
+          </List>
+      </ScrollView>
     );
   }
 }
@@ -99,5 +93,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         alignItems: 'center'
-    }
+    },
+    cardView: {
+        alignItems: 'center'
+  }
 });
