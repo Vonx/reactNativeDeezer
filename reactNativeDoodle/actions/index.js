@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import { REACT_APP_DEEZ_API } from 'react-native-dotenv';
+import {AsyncStorage} from 'react-native';
 
 //ApiClient.init(REACT_APP_DEEZ_API);
 
@@ -27,4 +28,40 @@ export const searchTracks = (singerName) => {
         const uniqueAlbums = _.uniqBy(albums, 'title');
         return uniqueAlbums;
     });
+};
+
+export const storeData = async (key, value) => {
+
+    const stringifyValue = JSON.stringify(value);
+    try {
+        await AsyncStorage.setItem(key, stringifyValue);
+    } catch (error) {
+        // Error saving data
+    }
+};
+
+export const retrieveData = async (key) => {
+    try {
+        const value = await AsyncStorage.getItem(key);
+        if (value !== null) {
+            // We have data!!
+            return JSON.parse(value)
+        }
+    } catch (error) {
+        // Error retrieving data
+    }
+};
+
+
+export const clearStorage = async () => {
+        try{
+            await AsyncStorage.clear();
+            return true;
+
+        }
+        catch(error){
+
+        }
+
+
 };
