@@ -36,7 +36,6 @@ export const storeData = async (key, value) => {
     try {
         await AsyncStorage.setItem(key, stringifyValue);
     } catch (error) {
-        // Error saving data
     }
 };
 

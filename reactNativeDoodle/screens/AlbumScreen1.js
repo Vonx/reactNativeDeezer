@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Alert } from 'react-native';
 import { Card, Text, Button, FormLabel, FormInput, Icon } from 'react-native-elements';
 import { ExpoLinksView } from '@expo/samples';
 import {CardList} from '../components/cardList';
@@ -39,13 +39,29 @@ export default class AlbumScreen1 extends React.Component {
 
         if(favoriteAlbums[album.id]) {
             // display message to warn user
+
+            Alert.alert(
+                ' Cannot save album!',
+                `Album already in favorites`,
+                [
+                    {text: 'Continue', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+            );
             return false;
         }
             favoriteAlbums[album.id] = album;
-            const success = await actions.storeData('favoriteAlbums', favoriteAlbums);
-
+            const success = actions.storeData('favoriteAlbums', favoriteAlbums);
             if(success){
-                console.log(success);
+                console.log('successfully added');
+                Alert.alert(
+                    'Album Added!',
+                    `Album ${album.title} by ${this.state.searchText} added to favorites`,
+                    [
+                        {text: 'Continue', onPress: () => console.log('OK Pressed')},
+                    ],
+                    { cancelable: false }
+                )
             }
     }
 

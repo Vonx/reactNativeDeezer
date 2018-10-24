@@ -22,7 +22,7 @@ const menuList = [
     {   title: 'Favorite Collections',
         subTitle: 'Access your favorite albums',
         icon: 'play',
-        navigateTo: '#'
+        navigateTo: 'FavoritesScreen'
     },
     {   title: 'Settings',
         subTitle: 'Customize your App',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Linking } from 'react-native';
+import { ScrollView, StyleSheet, View, Linking, Alert } from 'react-native';
 import { Card, Text, Button, FormLabel, FormInput, Icon, Avatar, Divider, List, ListItem } from 'react-native-elements';
 import * as actions from '../actions';
 
@@ -20,31 +20,9 @@ export default class LinksScreen extends React.Component {
             .catch(err => this.setState({tracks: []}))
     }
 
-    renderTracks(album) {
-        const {tracks} = this.state;
-        if (tracks && tracks.length > 0){
-
-            return tracks.map((track, index) => {
-                return (
-
-                    <ListItem key={index}
-                              title={track.title}
-                              leftIcon={{name: 'play-arrow'}}
-                              onPress={()=>{Linking.openURL(track.preview)}}
-                              rightIcon={<Icon raised
-                                        name='star'
-                                        type='font-awesome'
-                                        color='#f50'
-                                        onPress={()=> this.saveTrackToFavorites(album, track)}
-                                   />    }
-                    />)
-                 })
-                }
-            }
-
-   async saveTrackToFavorites(album, track) {
+    async saveTrackToFavorites(album, track) {
         const favoriteAlbums = await actions.retrieveData('favoriteAlbums') || {};
-
+        console.log('favorite album ' + favoriteAlbums);
         let albumData = favoriteAlbums[album.id];
 
         if(!albumData){
@@ -56,14 +34,46 @@ export default class LinksScreen extends React.Component {
         }
         albumData['tracks'][track.id] = track;
         favoriteAlbums[album.id] = albumData;
+        console.log('album data ' + albumData);
 
-        const success = await actions.storeData('favoriteAlbums', favoriteAlbums);
+        const success = actions.storeData('favoriteAlbums', favoriteAlbums);
 
         if(success){
+            // Works on both iOS and Android
             console.log(success);
+            Alert.alert(
+                'Track Added!',
+                `Track ${track.title} added from ${track.artist.name} was added to favorites`,
+                [
+                    {text: 'Continue', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+            )
         }
-   }
+        else { console.log('it failed')}
+    }
 
+    renderTracks(album) {
+        const {tracks} = this.state;
+        if (tracks && tracks.length > 0){
+
+            return tracks.map((track, index) => {
+                return (
+
+                    <ListItem key={index}
+                              title={track.title}
+                              leftIcon={{name: 'play-arrow'}}
+                              leftIconOnPress={()=>{Linking.openURL(track.preview)}}
+                              rightIcon={<Icon raised
+                                        name='star'
+                                        type='font-awesome'
+                                        color='#f50'
+                                        onPress={()=> this.saveTrackToFavorites(album, track)}
+                                   />    }
+                    />)
+                 })
+                }
+            }
 
     render() {
         const album = this.props.navigation.getParam('album', {});
