@@ -32,6 +32,21 @@ export default class AlbumScreen1 extends React.Component {
         actions.searchTracks(this.state.searchText)
             .then((albums) => {this.setState({albums: albums, isFetching: false})})
             .catch(err => this.setState({albums: [], isFetching: false}))
+    };
+
+    async saveAlbumToFavorite(album){
+        const favoriteAlbums = await actions.retrieveData('favoriteAlbums') || {};
+
+        if(favoriteAlbums[album.id]) {
+            // display message to warn user
+            return false;
+        }
+            favoriteAlbums[album.id] = album;
+            const success = await actions.storeData('favoriteAlbums', favoriteAlbums);
+
+            if(success){
+                console.log(success);
+            }
     }
 
     renderBottomNavigation(album)  {
@@ -50,7 +65,7 @@ export default class AlbumScreen1 extends React.Component {
                       type='font-awesome'
                       color='#f58'
                       size={30}/>
-                <Icon onPress={() => {}}
+                <Icon onPress={() => {this.saveAlbumToFavorite(album)}}
                       raised
                       name='thumbs-up'
                       type='font-awesome'
@@ -79,7 +94,7 @@ export default class AlbumScreen1 extends React.Component {
             }
         </ScrollView>
         )
-    }
+    };
 
     render() {
     // debugger;

@@ -20,7 +20,7 @@ export default class LinksScreen extends React.Component {
             .catch(err => this.setState({tracks: []}))
     }
 
-    renderTracks() {
+    renderTracks(album) {
         const {tracks} = this.state;
         if (tracks && tracks.length > 0){
 
@@ -30,17 +30,39 @@ export default class LinksScreen extends React.Component {
                     <ListItem key={index}
                               title={track.title}
                               leftIcon={{name: 'play-arrow'}}
-                              onPress={() => {}}
+                              onPress={()=>{Linking.openURL(track.preview)}}
                               rightIcon={<Icon raised
                                         name='star'
                                         type='font-awesome'
                                         color='#f50'
-                                        onPress={()=>{Linking.openURL(track.preview)}}
+                                        onPress={()=> this.saveTrackToFavorites(album, track)}
                                    />    }
                     />)
                  })
                 }
             }
+
+   async saveTrackToFavorites(album, track) {
+        const favoriteAlbums = await actions.retrieveData('favoriteAlbums') || {};
+
+        let albumData = favoriteAlbums[album.id];
+
+        if(!albumData){
+            albumData = album;
+        }
+        if(!albumData['tracks']){
+            albumData['tracks'] = {};
+
+        }
+        albumData['tracks'][track.id] = track;
+        favoriteAlbums[album.id] = albumData;
+
+        const success = await actions.storeData('favoriteAlbums', favoriteAlbums);
+
+        if(success){
+            console.log(success);
+        }
+   }
 
 
     render() {
@@ -68,7 +90,7 @@ export default class LinksScreen extends React.Component {
                 </View>
                 <Divider style={{backgroundColor: 'black'}}/>
                 <List containerStyle={{paddingTop: 0, marginTop: 0}}>
-                {this.renderTracks()}
+                {this.renderTracks(album)}
                 </List>
             </ScrollView>
         );
