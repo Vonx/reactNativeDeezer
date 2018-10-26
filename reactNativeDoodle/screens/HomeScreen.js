@@ -39,7 +39,6 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Button title={'Navigate to Album Screen'} onPress={() => {this.props.navigation.navigate('AlbumScreen')}}/>
           <List containerStyle={{backgroundColor: '#eaeaea', marginTop: 0 }}>
               {menuList.map((item, index)=>{
 

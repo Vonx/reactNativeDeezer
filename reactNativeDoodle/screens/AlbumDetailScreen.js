@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View, Linking, Alert } from 'react-native';
 import { Card, Text, Button, FormLabel, FormInput, Icon, Avatar, Divider, List, ListItem } from 'react-native-elements';
 import * as actions from '../actions';
 
-export default class LinksScreen extends React.Component {
+export default class AlbumDetailsScreen extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -22,7 +22,6 @@ export default class LinksScreen extends React.Component {
 
     async saveTrackToFavorites(album, track) {
         const favoriteAlbums = await actions.retrieveData('favoriteAlbums') || {};
-        console.log('favorite album ' + favoriteAlbums);
         let albumData = favoriteAlbums[album.id];
 
         if(!albumData){
@@ -34,7 +33,6 @@ export default class LinksScreen extends React.Component {
         }
         albumData['tracks'][track.id] = track;
         favoriteAlbums[album.id] = albumData;
-        console.log('album data ' + albumData);
 
         const success = actions.storeData('favoriteAlbums', favoriteAlbums);
 
