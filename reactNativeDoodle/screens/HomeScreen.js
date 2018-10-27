@@ -8,10 +8,6 @@ import {
   View
 } from 'react-native';
 import { Card, Button, FormLabel, FormInput, Icon, List, ListItem, Text } from 'react-native-elements';
-import {CardList} from '../components/cardList';
-import { WebBrowser } from 'expo';
-
-import { MonoText } from '../components/StyledText';
 
 const menuList = [
     {   title: 'Search Albums',
@@ -39,12 +35,14 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
+
           <List containerStyle={{backgroundColor: '#eaeaea', marginTop: 0 }}>
               {menuList.map((item, index)=>{
 
                   return (
                       <Card key={index}
-                            title={item.title}>
+                            title={item.title}
+                            >
                             <View style={styles.cardView}>
                                 <Text style={{marginBottom: 10}}>{item.subTitle}</Text>
                                 <Icon onPress={() => {{this.props.navigation.navigate(item.navigateTo)}}}
@@ -66,7 +64,6 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
     textColor: {
     color: '#d61b1b',
@@ -95,5 +92,12 @@ const styles = StyleSheet.create({
     },
     cardView: {
         alignItems: 'center'
-  }
+  },
+    backgroundVideo: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    }
 });
