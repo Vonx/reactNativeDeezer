@@ -17,7 +17,8 @@ export const getAlbum = (albumId) => {
 
     return axiosInstance.get(`album/${albumId}`).then((response) => {
         const theAlbum = response.data.tracks.data;
-        return theAlbum;
+        const theGenreId = response.data.genre_id;
+        return {theAlbum, theGenreId};
     });
 };
 

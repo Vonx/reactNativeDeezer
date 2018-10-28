@@ -102,8 +102,11 @@ export default class AlbumScreen1 extends React.Component {
                 this.inputArtist()
             }}/>
             {this.state.albums.length > 0 && !this.state.isFetching &&
+                <View>
+            <Text style={styles.textStyle}>Results for: {this.state.searchText}</Text>
             <CardList data={this.state.albums} imageKey={'cover_big'} titleKey={'title'} buttonText={'See more details'}
-                      tracklist={'tracklist'} bottomView={this.renderBottomNavigation}/>
+                      bottomView={this.renderBottomNavigation}/>
+                </View>
             }
             {this.state.albums.length === 0 && this.state.isFetching &&
                 <Bars style={styles.center} size={20} color="#000000" />
@@ -131,6 +134,11 @@ const styles = StyleSheet.create({
     albumMenu: {
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    textStyle:{
+        fontSize: 20,
+        alignSelf: 'center',
+        paddingTop: 10
 
     }
 });

@@ -6,12 +6,11 @@ import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 export class CardList extends React.Component {
 
     showData() {
-        const {data, imageKey, titleKey, buttonText, tracklist, bottomView} = this.props;
+        const {data, imageKey, titleKey, buttonText, bottomView} = this.props;
 
         return (
         <FlatList data={data} keyExtractor={(item, index)=> index.toString()} renderItem={({item, index})=>{ return (
              <Card key={index} title={item[titleKey]} image={{uri: item[imageKey]}}>
-                <Text>{item[tracklist]}</Text>
                 {bottomView(item)}
              </Card>
         );

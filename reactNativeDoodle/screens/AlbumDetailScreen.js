@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Linking, Alert } from 'react-native';
+import { ScrollView, StyleSheet, View, Linking, Alert, TouchableOpacity } from 'react-native';
 import { Card, Text, Button, FormLabel, FormInput, Icon, Avatar, Divider, List, ListItem } from 'react-native-elements';
 import * as actions from '../actions';
+import {StyledButton} from '../components/StyledButton'
 
 export default class AlbumDetailsScreen extends React.Component {
     constructor() {
@@ -15,9 +16,9 @@ export default class AlbumDetailsScreen extends React.Component {
         const album = this.props.navigation.getParam('album', {});
         debugger;
         actions.getAlbum(album.id)
-            .then((tracks) => {this.setState({tracks: tracks});
+            .then((tracks) => {this.setState({tracks: tracks.theAlbum});
         console.log(tracks)})
-            .catch(err => this.setState({tracks: []}))
+            .catch(err => this.setState({tracks: []}));
     }
 
     async saveTrackToFavorites(album, track) {
@@ -57,13 +58,12 @@ export default class AlbumDetailsScreen extends React.Component {
 
             return tracks.map((track, index) => {
                 return (
-
                     <ListItem key={index}
                               title={track.title}
                               leftIcon={{name: 'play-arrow'}}
                               leftIconOnPress={()=>{Linking.openURL(track.preview)}}
                               rightIcon={<Icon raised
-                                        name='star'
+                                        name='heart'
                                         type='font-awesome'
                                         color='#f50'
                                         onPress={()=> this.saveTrackToFavorites(album, track)}
@@ -85,8 +85,6 @@ export default class AlbumDetailsScreen extends React.Component {
                   <View style={styles.headerRight}>
                       <Text style={styles.mainText}h4>{album.title}</Text>
                       <Text style={styles.subText} h4>{artist}</Text>
-                      <Text h4></Text>
-
 
                     <Icon raised
                           name='play'
@@ -94,6 +92,7 @@ export default class AlbumDetailsScreen extends React.Component {
                           color='#f50'
                           size={30}
                           onPress={()=>{Linking.openURL(this.state.tracks[0].preview)}}/>
+
                   </View>
                 </View>
                 <Divider style={{backgroundColor: 'black'}}/>
@@ -136,5 +135,5 @@ const styles = StyleSheet.create({
     subText: {
         color: '#3a3a3a',
         fontSize: 17
-    }
+    },
 });
